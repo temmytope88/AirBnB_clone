@@ -1,0 +1,10 @@
+header{
+    background-color: white;
+    background: url("../images/logo.png") left center;
+    height: 70px;
+    width: 100%;
+    border-bottom: 1px #CCCCCC solid;
+    padding-left: 20px;
+    background-repeat: no-repeat;
+    background-origin: content-box;
+}
