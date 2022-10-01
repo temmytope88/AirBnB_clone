@@ -1,13 +1,13 @@
 import cmd
 import models
 from models import storage
-from models import BaseModel, FileStorage
+from models import BaseModel, FileStorage, User
 
 
 class HBNBCommand(cmd.Cmd):
     """ class cmd """
-    prompt = '(hbnb) '
-    class_list = {"BaseModel"}
+    prompt = '(hbnb)'
+    class_list = {"BaseModel", "User"}
 
     def do_quit(self, args):
         """  type <quit> to exit the program """
@@ -166,7 +166,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
 
         if len(args) > 0:
-            if args[0] != "BaseModel":
+            if args[0] not in ["BaseModel", "User"]:
                 print("** class doesn't exist **")
             else:
                 if len(args) == 1:
@@ -203,6 +203,31 @@ class HBNBCommand(cmd.Cmd):
                                     new_base_model = BaseModel(**obj_to_dict)
                                     # save to updated the updated_at attribute
                                     new_base_model.save()
+                            if len(args) >= 4 and args[0] == "User":
+                                # reload the private attribute __object of the FileStorage class
+                                FileStorage().reload()
+                                # get all the content of the __object using the all function
+                                content = FileStorage.all(FileStorage)
+                                value_input = "{}.{}".format("User", args[1])
+                                if content.get(value_input) is None:
+                                    print("** no instance found **")
+                                else:
+                                    # obtain the user from the json file using the id
+                                    obj = content[value_input]
+                                    # convert the obj to dictionary using the to_dict function in the BaseModel class
+                                    obj_to_dict = obj.to_dict()
+
+                                   # convert the attribute and value to a string
+                                    key = str(args[2])
+                                    value = str(args[3])
+
+                                    # update the existing dictionary(BaseModel)
+                                    obj_to_dict[key] = value
+
+                                    # convert the dictionary back to a BaseModel
+                                    new_user = User(**obj_to_dict)
+                                    # save to updated the updated_at attribute
+                                    new_user.save()
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
