@@ -157,6 +157,14 @@ class HBNBCommand(cmd.Cmd):
                     value = content[key]
                     value_list.append(str(value))
                 print (value_list)
+            elif args[0] == "User":
+                content = models.storage.all()
+                value_list = []
+                for key in content.keys():
+                    value = content[key]
+                    if value.__class__ == "User":
+                        value_list.append(str(value))
+                pass
             else:
                 print("** class doesn't exist **")
 
